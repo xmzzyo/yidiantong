@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.user.dao.ParInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ydt.user.bean.ParInfo">
+    <id column="Stu_ID" property="stuId" jdbcType="VARCHAR" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="Stu_Name" property="stuName" jdbcType="VARCHAR" />
+    <result column="Birth" property="birth" jdbcType="DATE"/>
+    <result column="Stu_Class" property="stuClass" jdbcType="VARCHAR" />
+    <result column="Address" property="address" jdbcType="VARCHAR" />
+    <result column="Tel" property="tel" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="qqNum" property="qqnum" jdbcType="VARCHAR" />
+    <result column="Picture" property="picture" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    SELECT * FROM par_info
+  </select>
+
+  <select id="selectByID" resultType="com.ydt.user.bean.ParInfo" parameterType="String">
+    SELECT * FROM par_info WHERE Stu_ID = #{stuId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByGC" resultMap="BaseResultMap" parameterType="String">
+    SELECT * FROM par_info WHERE Stu_Class = #{stuClass,jdbcType=VARCHAR}
+  </select>
+
+  <update id="upadteUser" parameterType="com.ydt.user.bean.ParInfo">
+    UPDATE par_info
+    SET Stu_ID = #{stuId,jdbcType=VARCHAR},
+    Name = #{name,jdbcType=VARCHAR},
+    Stu_Name = #{stuName,jdbcType=VARCHAR},
+    Birth = #{birth,jdbcType=DATE},
+    Stu_Class = #{stuClass,jdbcType=VARCHAR},
+    Address = #{address,jdbcType=VARCHAR},
+    Tel = #{tel,jdbcType=VARCHAR},
+    Email = #{email,jdbcType=VARCHAR},
+    qqNum = #{qqnum,jdbcType=VARCHAR}
+    <if test="picture != null">
+    ,Picture = #{picture,jdbcType=VARCHAR}
+    </if>
+    WHERE Stu_ID = #{stuId,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="insertID">
+    INSERT  par_info (Stu_ID) VALUES (#{stuId,jdbcType=VARCHAR})
+  </insert>
+
+</mapper>

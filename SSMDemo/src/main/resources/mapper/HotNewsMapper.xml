@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.admin.dao.HotNewsMapper" >
+  <resultMap id="BaseResultMap" type="com.ydt.admin.bean.HotNews" >
+    <id column="News_ID" property="newsId" jdbcType="INTEGER" />
+    <result column="Tea_ID" property="teaId" jdbcType="VARCHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="News_Date" property="newsDate" jdbcType="DATE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ydt.admin.bean.HotNews" extends="BaseResultMap" >
+    <result column="News_Text" property="newsText" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <select id="countNum" resultType="int">
+    SELECT count(*) FROM hot_news
+  </select>
+
+  <select id="selectByDate" resultMap="ResultMapWithBLOBs">
+    SELECT * FROM hot_news ORDER BY News_ID DESC
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    *
+    from hot_news
+    where News_ID = #{newsId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hot_news
+    where News_ID = #{newsId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.ydt.admin.bean.HotNews" >
+    insert into hot_news (News_ID, Tea_ID, Title, 
+      News_Date, News_Text)
+    values (#{newsId,jdbcType=INTEGER}, #{teaId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{newsDate,jdbcType=DATE}, #{newsText,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ydt.admin.bean.HotNews" >
+    insert into hot_news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newsId != null" >
+        News_ID,
+      </if>
+      <if test="teaId != null" >
+        Tea_ID,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="newsDate != null" >
+        News_Date,
+      </if>
+      <if test="newsText != null" >
+        News_Text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newsId != null" >
+        #{newsId,jdbcType=INTEGER},
+      </if>
+      <if test="teaId != null" >
+        #{teaId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDate != null" >
+        #{newsDate,jdbcType=DATE},
+      </if>
+      <if test="newsText != null" >
+        #{newsText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ydt.admin.bean.HotNews" >
+    update hot_news
+    <set >
+      <if test="teaId != null" >
+        Tea_ID = #{teaId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDate != null" >
+        News_Date = #{newsDate,jdbcType=DATE},
+      </if>
+      <if test="newsText != null" >
+        News_Text = #{newsText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where News_ID = #{newsId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ydt.admin.bean.HotNews" >
+    update hot_news
+    set Tea_ID = #{teaId,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR},
+      News_Date = #{newsDate,jdbcType=DATE},
+      News_Text = #{newsText,jdbcType=LONGVARCHAR}
+    where News_ID = #{newsId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

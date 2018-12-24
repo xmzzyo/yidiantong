@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.common.dao.AuthMapper">
+    <resultMap id="BaseResultMap" type="com.ydt.common.bean.Auth">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="Password" property="password" jdbcType="VARCHAR"/>
+        <result column="Answer1" property="answer1" jdbcType="VARCHAR"/>
+        <result column="Anwser2" property="anwser2" jdbcType="VARCHAR"/>
+        <result column="Anwser3" property="anwser3" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT * from auth
+    </select>
+
+    <select id="selectByID" resultType="com.ydt.common.bean.Auth" parameterType="String">
+    SELECT * FROM auth WHERE ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+    <update id="upadteAuth" parameterType="com.ydt.common.bean.Auth">
+        UPDATE auth
+        SET
+        ID = #{id,jdbcType=VARCHAR}
+        <if test="password != null">
+            ,Password = #{password,jdbcType=VARCHAR}
+        </if>
+        <if test="answer1 != null">
+            ,Answer1 = #{answer1,jdbcType=VARCHAR}
+        </if>
+        <if test="anwser2 != null">
+            ,Anwser2 = #{anwser2,jdbcType=VARCHAR}
+        </if>
+        <if test="anwser3 != null">
+            ,Anwser3 = #{anwser3,jdbcType=VARCHAR}
+        </if>
+        WHERE ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertAuth" parameterType="com.ydt.common.bean.Auth">
+        INSERT  auth (ID,Password,Answer1,Anwser2,Anwser3)
+        VALUES (#{id,jdbcType=VARCHAR},
+                #{password,jdbcType=VARCHAR},
+                #{answer1,jdbcType=VARCHAR},
+                #{anwser2,jdbcType=VARCHAR},
+                #{anwser3,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

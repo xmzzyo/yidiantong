@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.admin.dao.TeaInfoMapper">
+    <resultMap id="BaseResultMap" type="com.ydt.admin.bean.TeaInfo">
+        <id column="Tea_ID" property="teaId" jdbcType="VARCHAR"/>
+        <result column="Name" property="name" jdbcType="VARCHAR"/>
+        <result column="Birth" property="birth" jdbcType="DATE"/>
+        <result column="Class1" property="class1" jdbcType="VARCHAR"/>
+        <result column="Class2" property="class2" jdbcType="VARCHAR"/>
+        <result column="Class3" property="class3" jdbcType="VARCHAR"/>
+        <result column="Course_Name" property="courseName" jdbcType="VARCHAR"/>
+        <result column="QQ" property="qq" jdbcType="VARCHAR"/>
+        <result column="Tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="Email" property="email" jdbcType="VARCHAR"/>
+        <result column="Position" property="position" jdbcType="VARCHAR"/>
+        <result column="Picture" property="picture" jdbcType="VARCHAR"/>
+        <result column="Self_Info" property="selfInfo" jdbcType="VARCHAR"/>
+        <result column="Glory" property="glory" jdbcType="VARCHAR"/>
+        <result column="Power" property="power" jdbcType="VARCHAR"/>
+        <result column="Inf_Send_Type" property="infSendType" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="getAllUser" resultMap="BaseResultMap">
+        SELECT * FROM tea_info
+    </select>
+
+    <select id="getInfoByID" parameterType="String" resultType="com.ydt.admin.bean.TeaInfo">
+        SELECT * FROM tea_info WHERE Tea_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getNameByID" parameterType="String" resultType="String">
+        SELECT Name FROM tea_info WHERE Tea_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByGC" parameterType="String" resultMap="BaseResultMap">
+        SELECT * FROM tea_info WHERE (Class1 = #{classnum,jdbcType=VARCHAR} OR Class2 = #{classnum,jdbcType=VARCHAR} OR Class3 = #{classnum,jdbcType=VARCHAR})
+    </select>
+
+    <update id="updateInfo" parameterType="com.ydt.admin.bean.TeaInfo">
+        UPDATE tea_info
+        SET
+        Name = #{name,jdbcType=VARCHAR},
+        Birth = #{birth,jdbcType=DATE},
+        Class1 = #{class1,jdbcType=VARCHAR},
+        Class2 = #{class2,jdbcType=VARCHAR},
+        Class3 = #{class3,jdbcType=VARCHAR},
+        Course_Name = #{courseName,jdbcType=VARCHAR},
+        QQ = #{qq,jdbcType=VARCHAR},
+        Tel = #{tel,jdbcType=VARCHAR},
+        Email = #{email,jdbcType=VARCHAR},
+        Position = #{position,jdbcType=VARCHAR},
+        Picture = #{picture,jdbcType=VARCHAR},
+        Self_Info = #{selfInfo,jdbcType=VARCHAR},
+        Glory = #{glory,jdbcType=VARCHAR}
+        <if test="power != null">
+        ,Power = #{power,jdbcType=VARCHAR}
+        </if>
+        <if test="infSendType != null">
+        ,Inf_Send_Type = #{infSendType,jdbcType=INTEGER}
+        </if>
+        WHERE Tea_ID = #{teaId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

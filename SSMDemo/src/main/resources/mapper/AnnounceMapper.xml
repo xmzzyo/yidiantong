@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.admin.dao.AnnounceMapper">
+    <resultMap id="BaseResultMap" type="com.ydt.admin.bean.Announce">
+        <id column="Ann_ID" property="annId" jdbcType="INTEGER"/>
+        <result column="Tea_ID" property="teaId" jdbcType="VARCHAR"/>
+        <result column="Title" property="title" jdbcType="VARCHAR"/>
+        <result column="Ann_Date" property="annDate" jdbcType="DATE"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.ydt.admin.bean.Announce" extends="BaseResultMap">
+        <result column="Ann_Text" property="annText" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <select id="countNum" resultType="int">
+        SELECT count(*) from announce
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="int">
+    select 
+    *
+    from announce
+    where Ann_ID = #{annId,jdbcType=INTEGER}
+  </select>
+
+    <select id="selectByDate" resultMap="ResultMapWithBLOBs">
+        select * from announce ORDER BY Ann_ID DESC
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="int">
+    delete from announce
+    where Ann_ID = #{annId,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="com.ydt.admin.bean.Announce" keyProperty="Ann_ID">
+    insert into announce (Ann_ID, Tea_ID, Title, 
+      Ann_Date, Ann_Text)
+    values (#{annId,jdbcType=INTEGER}, #{teaId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{annDate,jdbcType=DATE}, #{annText,jdbcType=LONGVARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.ydt.admin.bean.Announce" keyProperty="Ann_ID">
+        insert into announce
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="annId != null">
+                Ann_ID,
+            </if>
+            <if test="teaId != null">
+                Tea_ID,
+            </if>
+            <if test="title != null">
+                Title,
+            </if>
+            <if test="annDate != null">
+                Ann_Date,
+            </if>
+            <if test="annText != null">
+                Ann_Text,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="annId != null">
+                #{annId,jdbcType=INTEGER},
+            </if>
+            <if test="teaId != null">
+                #{teaId,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="annDate != null">
+                #{annDate,jdbcType=DATE},
+            </if>
+            <if test="annText != null">
+                #{annText,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ydt.admin.bean.Announce">
+        update announce
+        <set>
+            <if test="teaId != null">
+                Tea_ID = #{teaId,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                Title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="annDate != null">
+                Ann_Date = #{annDate,jdbcType=DATE},
+            </if>
+            <if test="annText != null">
+                Ann_Text = #{annText,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where Ann_ID = #{annId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.ydt.admin.bean.Announce">
+    update announce
+    set Tea_ID = #{teaId,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR},
+      Ann_Date = #{annDate,jdbcType=DATE},
+      Ann_Text = #{annText,jdbcType=LONGVARCHAR}
+    where Ann_ID = #{annId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

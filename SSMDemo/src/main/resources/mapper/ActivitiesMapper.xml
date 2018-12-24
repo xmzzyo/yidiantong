@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.admin.dao.ActivitiesMapper" >
+  <resultMap id="BaseResultMap" type="com.ydt.admin.bean.Activities" >
+    <id column="Acti_ID" property="actiId" jdbcType="INTEGER" />
+    <result column="Tea_ID" property="teaId" jdbcType="VARCHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="Acti_Date" property="actiDate" jdbcType="DATE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ydt.admin.bean.Activities" extends="BaseResultMap" >
+    <result column="Acti_Text" property="actiText" jdbcType="LONGVARCHAR" />
+    <result column="Acti_Detail" property="actiDetail" jdbcType="LONGVARCHAR" />
+    <result column="Acti_Notice" property="actiNotice" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+    <select id="countNum" resultType="int">
+        SELECT count(*) FROM activities
+    </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="int" >
+    select *
+    from activities
+    where Acti_ID = #{actiId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByDate" resultMap="ResultMapWithBLOBs">
+    SELECT * FROM activities ORDER BY Acti_ID DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="int" >
+    delete from activities
+    where Acti_ID = #{actiId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.ydt.admin.bean.Activities" >
+    insert into activities (Acti_ID, Tea_ID, Title, 
+      Acti_Date, Acti_Text, Acti_Detail, 
+      Acti_Notice)
+    values (#{actiId,jdbcType=INTEGER}, #{teaId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{actiDate,jdbcType=DATE}, #{actiText,jdbcType=LONGVARCHAR}, #{actiDetail,jdbcType=LONGVARCHAR}, 
+      #{actiNotice,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ydt.admin.bean.Activities" >
+    insert into activities
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actiId != null" >
+        Acti_ID,
+      </if>
+      <if test="teaId != null" >
+        Tea_ID,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="actiDate != null" >
+        Acti_Date,
+      </if>
+      <if test="actiText != null" >
+        Acti_Text,
+      </if>
+      <if test="actiDetail != null" >
+        Acti_Detail,
+      </if>
+      <if test="actiNotice != null" >
+        Acti_Notice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actiId != null" >
+        #{actiId,jdbcType=INTEGER},
+      </if>
+      <if test="teaId != null" >
+        #{teaId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="actiDate != null" >
+        #{actiDate,jdbcType=DATE},
+      </if>
+      <if test="actiText != null" >
+        #{actiText,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="actiDetail != null" >
+        #{actiDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="actiNotice != null" >
+        #{actiNotice,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ydt.admin.bean.Activities" >
+    update activities
+    <set >
+      <if test="teaId != null" >
+        Tea_ID = #{teaId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="actiDate != null" >
+        Acti_Date = #{actiDate,jdbcType=DATE},
+      </if>
+      <if test="actiText != null" >
+        Acti_Text = #{actiText,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="actiDetail != null" >
+        Acti_Detail = #{actiDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="actiNotice != null" >
+        Acti_Notice = #{actiNotice,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Acti_ID = #{actiId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ydt.admin.bean.Activities" >
+    update activities
+    set Tea_ID = #{teaId,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR},
+      Acti_Date = #{actiDate,jdbcType=DATE},
+      Acti_Text = #{actiText,jdbcType=LONGVARCHAR},
+      Acti_Detail = #{actiDetail,jdbcType=LONGVARCHAR},
+      Acti_Notice = #{actiNotice,jdbcType=LONGVARCHAR}
+    where Acti_ID = #{actiId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

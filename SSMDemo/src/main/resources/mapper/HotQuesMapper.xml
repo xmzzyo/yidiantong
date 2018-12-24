@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.admin.dao.HotQuesMapper" >
+  <resultMap id="BaseResultMap" type="com.ydt.admin.bean.HotQues" >
+    <id column="Hot_Question_ID" property="hotQuestionId" jdbcType="INTEGER" />
+    <result column="Stu_ID" property="stuId" jdbcType="VARCHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="Hot_Question_Date" property="hotQuestionDate" jdbcType="DATE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ydt.admin.bean.HotQues" extends="BaseResultMap" >
+    <result column="Hot_Question_Text" property="hotQuestionText" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+    <select id="countNum" resultType="int">
+        SELECT count(*) FROM hot_ques
+    </select>
+
+    <select id="selectByDate" resultMap="ResultMapWithBLOBs">
+        select * from hot_ques ORDER BY Hot_Question_ID DESC
+    </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    *
+    from hot_ques
+    where Hot_Question_ID = #{hotQuestionId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hot_ques
+    where Hot_Question_ID = #{hotQuestionId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.ydt.admin.bean.HotQues" >
+    insert into hot_ques (Hot_Question_ID, Stu_ID, Title, 
+      Hot_Question_Date, Hot_Question_Text)
+    values (#{hotQuestionId,jdbcType=INTEGER}, #{stuId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{hotQuestionDate,jdbcType=DATE}, #{hotQuestionText,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ydt.admin.bean.HotQues" >
+    insert into hot_ques
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hotQuestionId != null" >
+        Hot_Question_ID,
+      </if>
+      <if test="stuId != null" >
+        Stu_ID,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="hotQuestionDate != null" >
+        Hot_Question_Date,
+      </if>
+      <if test="hotQuestionText != null" >
+        Hot_Question_Text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hotQuestionId != null" >
+        #{hotQuestionId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="hotQuestionDate != null" >
+        #{hotQuestionDate,jdbcType=DATE},
+      </if>
+      <if test="hotQuestionText != null" >
+        #{hotQuestionText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ydt.admin.bean.HotQues" >
+    update hot_ques
+    <set >
+      <if test="stuId != null" >
+        Stu_ID = #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="hotQuestionDate != null" >
+        Hot_Question_Date = #{hotQuestionDate,jdbcType=DATE},
+      </if>
+      <if test="hotQuestionText != null" >
+        Hot_Question_Text = #{hotQuestionText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Hot_Question_ID = #{hotQuestionId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ydt.admin.bean.HotQues" >
+    update hot_ques
+    set Stu_ID = #{stuId,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR},
+      Hot_Question_Date = #{hotQuestionDate,jdbcType=DATE},
+      Hot_Question_Text = #{hotQuestionText,jdbcType=LONGVARCHAR}
+    where Hot_Question_ID = #{hotQuestionId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

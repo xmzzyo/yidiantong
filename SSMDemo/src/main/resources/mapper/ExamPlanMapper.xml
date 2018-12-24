@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ydt.admin.dao.ExamPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.ydt.admin.bean.ExamPlan" >
+    <id column="Exam_ID" property="examId" jdbcType="INTEGER" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="Tea_ID" property="teaId" jdbcType="VARCHAR" />
+    <result column="Exam_Date" property="examDate" jdbcType="DATE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ydt.admin.bean.ExamPlan" extends="BaseResultMap" >
+    <result column="Exam_Text" property="examText" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <select id="countNum" resultType="int">
+    SELECT count(*) FROM exam_plan
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    *
+    from exam_plan
+    where Exam_ID = #{examId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByDate" resultMap="ResultMapWithBLOBs">
+    select * from exam_plan ORDER BY Exam_ID DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam_plan
+    where Exam_ID = #{examId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.ydt.admin.bean.ExamPlan" >
+    insert into exam_plan (Exam_ID, Title, Tea_ID, 
+      Exam_Date, Exam_Text)
+    values (#{examId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{teaId,jdbcType=VARCHAR}, 
+      #{examDate,jdbcType=DATE}, #{examText,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ydt.admin.bean.ExamPlan" >
+    insert into exam_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="examId != null" >
+        Exam_ID,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="teaId != null" >
+        Tea_ID,
+      </if>
+      <if test="examDate != null" >
+        Exam_Date,
+      </if>
+      <if test="examText != null" >
+        Exam_Text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="examId != null" >
+        #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="teaId != null" >
+        #{teaId,jdbcType=VARCHAR},
+      </if>
+      <if test="examDate != null" >
+        #{examDate,jdbcType=DATE},
+      </if>
+      <if test="examText != null" >
+        #{examText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ydt.admin.bean.ExamPlan" >
+    update exam_plan
+    <set >
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="teaId != null" >
+        Tea_ID = #{teaId,jdbcType=VARCHAR},
+      </if>
+      <if test="examDate != null" >
+        Exam_Date = #{examDate,jdbcType=DATE},
+      </if>
+      <if test="examText != null" >
+        Exam_Text = #{examText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Exam_ID = #{examId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ydt.admin.bean.ExamPlan" >
+    update exam_plan
+    set Title = #{title,jdbcType=VARCHAR},
+      Tea_ID = #{teaId,jdbcType=VARCHAR},
+      Exam_Date = #{examDate,jdbcType=DATE},
+      Exam_Text = #{examText,jdbcType=LONGVARCHAR}
+    where Exam_ID = #{examId,jdbcType=INTEGER}
+  </update>
+
+</mapper>
